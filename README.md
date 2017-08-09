@@ -1,242 +1,52 @@
-# Slim 3 Controller Framework
+# Slim Controllers
 
-## Introduction
-
-Provides controller functionality to Slim Framework 3. Also includes PHPUnit TestCase for testing controllers.
+Slim Controllers is an extremely lightweight framework to provide controllers for Slim 3.
 
 ## Installation
 
-Composer
-
-```php
-composer require markuslewis/slim3-controller
+```bash
+composer require icosillion/slim-controllers
 ```
 
-## Usage ##
-
-/app/routes.php
+## Usage
+Use Slim's groups to group your controller actions together in your main Slim file.
 
 ```php
 <?php
 
-//Index routes (homepage, about, etc)
-$app->group('', function () use ($app) {
+use Slim\App;
 
-    $controller = new App\Controller\IndexController($app);
+$app = new App();
 
-    $app->get('/', $controller('index'));
-    $app->get('/contact', $controller('contact'));
-});
-
-//Create resource method for Slim::resource($route, $name)
-$app->group('/articles', function () use ($app) {
-
-    $controller = new App\Controller\ExampleController($app);
+$app->group('/', function () use ($app) {
+    $controller = new RootController($app);
 
     $app->get('', $controller('index'));
-    $app->get('/create', $controller('create'));
-    $app->post('', $controller('post'));
-    $app->get('/{id:[0-9]+}', $controller('show'));
-    $app->get('/{id:[0-9]+}/edit', $controller('edit'));
-    $app->put('/{id:[0-9]+}', $controller('put'));
-    $app->delete('/{id:[0-9]+}', $controller('delete'));
 });
+
+$app->run();
 ```
 
-/app/controllers/ExampleController.php
+Extend your controller from the `Controller` class.
 
 ```php
 <?php
 
-namespace App\Controller;
+use Icosillion\SlimControllers\Controller;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
-use MartynBiz\Slim3Controller\Controller;
-
-class ExampleController extends Controller
+class RootController extends Controller
 {
-    public function index()
+    public function index(Request $request, Response $response, array $args)
     {
-        return $this->render('admin/example/index.html', [
-            //Data to pass to the view
-        ]);
-    }
+        $response->getBody()->write('Hello World!');
 
-    public function show($id)
-    {
-        return $this->render('admin/example/show.html', [
-            //Data to pass to the view
-        ]);
-    }
-
-    public function create()
-    {
-        return $this->render('admin/example/create.html');
-    }
-
-    public function post()
-    {
-        return $this->redirect('/admin/example');
-    }
-
-    public function edit($id)
-    {
-        return $this->render('admin/example/edit.html', [
-            //Data to pass to the view
-        ]);
-    }
-
-    public function update($id)
-    {
-        return $this->redirect('/admin/example/' . $id);
+        return $response;
     }
 }
 ```
 
-## Get method
+## License
 
-The get() method within controllers is used to get dependencies defined in $app:
-
-/app/dependencies.php
-
-```php
-$container['model.example'] = function ($container) {
-    return new App\Model\Example();
-};
-```
-
-/app/controllers/ExampleController.php
-
-```php
-.
-.
-.
-class ExampleController extends Controller
-{
-    public function index()
-    {
-        // the "get" method is used to retrieve items stored in the Slim container
-        $examples = $this->get('model.example')->find();
-
-        // the "render" provides a neat means to pass template and data to $container['view']
-        return $this->render('admin/example/index.html', array(
-            'examples' => $examples,
-        ));
-    }
-    .
-    .
-    .
-```
-
-## Request
-
-getCookie
-
-```
-$request->getCookie($name, $defaultValue);
-```est->getCookie($name, $defaultValue);
-```
-
-## Response
-
-### HTTP response codes
-
-There is a full list of HTTP response code enums which can be used in controllers
-when returning a response:
-
-```
-return $this->response->withStatus(Response::HTTP_BAD_REQUEST);
-```
-
-See full list here - https://github.com/martynbiz/slim3-controller/blob/master/src/Http/Response.php
-
-
-## Testing controllers ##
-
-/phpunit.xml
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         bootstrap="tests/bootstrap.php">
-    <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory>./tests/</directory>
-        </testsuite>
-    </testsuites>
-</phpunit>
-```
-
-/tests/application/controllers/ExampleControllerTest.php
-
-```php
-<?php
-
-use SlimMvc\Test\PHPUnit\TestCase;
-
-class ExampleControllerTest extends TestCase
-{
-    /**
-     * @var Slim\Container
-     */
-    protected $container;
-
-    public function setUp()
-    {
-        // =========================
-        // Instantiate the app and container
-
-        $settings = require APPLICATION_PATH . '/settings.php';
-        $app = new \Slim\App($settings);
-
-
-        // =========================
-        // Set up dependencies
-
-        require APPLICATION_PATH . '/dependencies.php';
-
-
-        // =========================
-        // Create test stubs (optional)
-
-        // In some cases, where services have become "frozen", we need to define
-        // mocks before they are loaded, so immediately after including dependencies.php is best
-
-        //...
-        $this->container['my_dependency'] = ...
-
-
-        // =========================
-        // Register middleware
-
-        require APPLICATION_PATH . '/middleware.php';
-
-
-        // =========================
-        // Register routes
-
-        require APPLICATION_PATH . '/routes.php';
-
-        // store $app for access in test* methods
-        $this->app = $app;
-
-        //... fixtures, etc
-    }
-
-    public function test_example_route()
-    {
-        $this->dispatch('/example');
-
-        //Mock methods (optional)
-        $container = $this->app->getContainer();
-        $container['my_dependency']->expects(...
-
-        $this->assertController('articles');
-        $this->assertAction('index');
-        $this->assertStatusCode(200);
-        $this->assertQuery('table#examples');
-        $this->assertQueryCount('div.errors', 0);
-        // $this->assertRedirects();
-        // $this->assertRedirectsTo('...');
-    }
-}
-```
+This project is licensed under the MIT license. A copy of this is available in the LICENSE file.

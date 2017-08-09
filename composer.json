@@ -5,8 +5,9 @@
     "keywords": [
         "slim", "slim3", "mvc", "controller"
     ],
-    "homepage": "http://github.com/icosillion/slim-controller",
+    "homepage": "http://github.com/icosillion/slim-controllers",
     "license": "MIT",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Marcus Lewis",
@@ -34,8 +35,5 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*"
-    },
-    "scripts": {
-        "test": "./vendor/bin/phpunit"
     }
 }
