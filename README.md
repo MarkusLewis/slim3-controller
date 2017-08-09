@@ -1,15 +1,15 @@
-# Slim v3 controller #
+# Slim 3 Controller Framework
 
-## Introduction ##
+## Introduction
 
-Provides controller functionality to Slim Framework v3. Also includes PHPUnit TestCase for testing controllers.
+Provides controller functionality to Slim Framework 3. Also includes PHPUnit TestCase for testing controllers.
 
-## Installation ##
+## Installation
 
 Composer
 
 ```php
-composer require martynbiz/slim3-controller
+composer require markuslewis/slim3-controller
 ```
 
 ## Usage ##
@@ -19,7 +19,7 @@ composer require martynbiz/slim3-controller
 ```php
 <?php
 
-// index routes (homepage, about, etc)
+//Index routes (homepage, about, etc)
 $app->group('', function () use ($app) {
 
     $controller = new App\Controller\IndexController($app);
@@ -28,7 +28,7 @@ $app->group('', function () use ($app) {
     $app->get('/contact', $controller('contact'));
 });
 
-// create resource method for Slim::resource($route, $name)
+//Create resource method for Slim::resource($route, $name)
 $app->group('/articles', function () use ($app) {
 
     $controller = new App\Controller\ExampleController($app);
@@ -56,16 +56,16 @@ class ExampleController extends Controller
 {
     public function index()
     {
-        return $this->render('admin/example/index.html', array(
-            // data to pass to the view
-        ));
+        return $this->render('admin/example/index.html', [
+            //Data to pass to the view
+        ]);
     }
 
     public function show($id)
     {
-        return $this->render('admin/example/show.html', array(
-            // data to pass to the view
-        ));
+        return $this->render('admin/example/show.html', [
+            //Data to pass to the view
+        ]);
     }
 
     public function create()
@@ -75,28 +75,24 @@ class ExampleController extends Controller
 
     public function post()
     {
-        // handle create
-
         return $this->redirect('/admin/example');
     }
 
     public function edit($id)
     {
-        return $this->render('admin/example/edit.html', array(
-            // data to pass to the view
-        ));
+        return $this->render('admin/example/edit.html', [
+            //Data to pass to the view
+        ]);
     }
 
     public function update($id)
     {
-        // handle update
-
         return $this->redirect('/admin/example/' . $id);
     }
 }
 ```
 
-## Get method ##
+## Get method
 
 The get() method within controllers is used to get dependencies defined in $app:
 
@@ -131,7 +127,7 @@ class ExampleController extends Controller
     .
 ```
 
-## Request ##
+## Request
 
 getCookie
 
@@ -140,9 +136,9 @@ $request->getCookie($name, $defaultValue);
 ```est->getCookie($name, $defaultValue);
 ```
 
-## Response ##
+## Response
 
-### HTTP response codes ###
+### HTTP response codes
 
 There is a full list of HTTP response code enums which can be used in controllers
 when returning a response:
@@ -168,12 +164,6 @@ See full list here - https://github.com/martynbiz/slim3-controller/blob/master/s
         </testsuite>
     </testsuites>
 </phpunit>
-```
-
-/tests/bootstrap.php
-
-```php
-// coming soon, still a little bloated
 ```
 
 /tests/application/controllers/ExampleControllerTest.php
@@ -236,7 +226,7 @@ class ExampleControllerTest extends TestCase
     {
         $this->dispatch('/example');
 
-        // mock methods (optional)
+        //Mock methods (optional)
         $container = $this->app->getContainer();
         $container['my_dependency']->expects(...
 
@@ -250,8 +240,3 @@ class ExampleControllerTest extends TestCase
     }
 }
 ```
-
-TODO
-doc - getCookie
-tests - cookies not available, why?
-body missing in tests - why??
