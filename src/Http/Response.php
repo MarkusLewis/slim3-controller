@@ -1,8 +1,8 @@
 <?php
 
-namespace MartynBiz\Slim3Controller\Http;
+declare(strict_types=1);
 
-use Psr\Http\Message\ResponseInterface;
+namespace Icosillion\SlimControllers\Http;
 
 /**
  * Extends Slim's Response with additional methods for asserting controllers during
@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
  * @link https://github.com/php-fig/http-message/blob/master/src/MessageInterface.php
  * @link https://github.com/php-fig/http-message/blob/master/src/ResponseInterface.php
  */
-class Response extends \Slim\Http\Response implements ResponseInterface
+class Response extends \Slim\Http\Response
 {
     const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;
@@ -100,7 +100,7 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      *
      * @return string
      */
-    public function getControllerName()
+    public function getControllerName(): string
     {
         return $this->controllerName;
     }
@@ -109,11 +109,13 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      * Set the last controller called
      *
      * @param string $controllerName
-     * @return string
+     * @return Response
      */
-    public function setControllerName($controllerName)
+    public function setControllerName(string $controllerName): self
     {
-        return $this->controllerName = $controllerName;
+        $this->controllerName = $controllerName;
+
+        return $this;
     }
 
     /**
@@ -121,7 +123,7 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      *
      * @return string
      */
-    public function getControllerClass()
+    public function getControllerClass(): string
     {
         return $this->controllerClass;
     }
@@ -130,11 +132,13 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      * Set the last controller called
      *
      * @param string $controllerClass
-     * @return string
+     * @return Response
      */
-    public function setControllerClass($controllerClass)
+    public function setControllerClass(string $controllerClass): self
     {
-        return $this->controllerClass = $controllerClass;
+        $this->controllerClass = $controllerClass;
+
+        return $this;
     }
 
     /**
@@ -142,7 +146,7 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      *
      * @return string
      */
-    public function getActionName()
+    public function getActionName(): string
     {
         return $this->actionName;
     }
@@ -151,9 +155,12 @@ class Response extends \Slim\Http\Response implements ResponseInterface
      * Set the last controller called
      *
      * @param string $actionName
+     * @return Response
      */
-    public function setActionName($actionName)
+    public function setActionName($actionName): self
     {
         $this->actionName = $actionName;
+
+        return $this;
     }
 }

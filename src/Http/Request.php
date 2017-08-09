@@ -1,8 +1,8 @@
 <?php
 
-namespace MartynBiz\Slim3Controller\Http;
+declare(strict_types=1);
 
-use Psr\Http\Message\ServerRequestInterface;
+namespace Icosillion\SlimControllers\Http;
 
 /**
  * Request
@@ -15,7 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @link https://github.com/php-fig/http-message/blob/master/src/RequestInterface.php
  * @link https://github.com/php-fig/http-message/blob/master/src/ServerRequestInterface.php
  */
-class Request extends \Slim\Http\Request implements ServerRequestInterface
+class Request extends \Slim\Http\Request
 {
     /**
      * Get a cookie, or a default value if not set
@@ -24,10 +24,10 @@ class Request extends \Slim\Http\Request implements ServerRequestInterface
      * @param string $defaultValue If none exist, use this value
      * @return string
      */
-    public function getCookie($name, $defaultValue=null)
+    public function getCookie(string $name, ?string $defaultValue = null): string
     {
         $cookies = $this->getCookieParams();
 
-        return array_key_exists($name, $cookies) ? $cookies[$name] : $defaultValue;
+        return $cookies[$name] ?? $defaultValue;
     }
 }
