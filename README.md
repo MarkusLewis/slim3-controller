@@ -1,6 +1,6 @@
 # Slim Controllers
 
-Slim Controllers is an extremely lightweight framework to provide controllers for Slim 3.
+Slim Controllers is an extremely lightweight framework to provide controllers for Slim 4.
 
 ## Installation
 
